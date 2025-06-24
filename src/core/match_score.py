@@ -10,6 +10,14 @@ import numpy as np
 from typing import Dict, Any, Optional, Union
 from .agent_pool import Agent
 
+def match_score(agent, task):
+    norm_agent = np.linalg.norm(agent)
+    norm_task = np.linalg.norm(task)
+    if norm_agent == 0 or norm_task == 0:
+        return 0.0
+    score = np.dot(agent, task) / (norm_agent * norm_task)
+    return float(score)
+
 def _sigmoid(x: float) -> float:
     """Numerically stable sigmoid activation."""
     # For large negative x, exp(-x) can overflow, so use np.clip

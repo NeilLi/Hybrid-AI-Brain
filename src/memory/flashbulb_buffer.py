@@ -115,6 +115,8 @@ class FlashbulbBuffer:
         return (f"FlashbulbBuffer(items={len(self._buffer)}, "
                 f"capacity={self.capacity}, "
                 f"total_weight={self.current_weight_sum:.2f}/{W_MAX})")
+    def clear(self):
+        self._buffer.clear()
 
 def main():
     """Demonstrates the functionality of the FlashbulbBuffer and MemoryItem."""

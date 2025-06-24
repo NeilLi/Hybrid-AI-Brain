@@ -13,21 +13,26 @@ from dataclasses import dataclass, field
 from typing import List, Any, Optional, Dict
 
 import logging
+
 logger = logging.getLogger("hybrid_ai_brain.agent_pool")
+
 
 @dataclass
 class Agent:
     """
     Represents a single micro-cell agent in the swarm.
     """
+
     id: str
     capabilities: np.ndarray
-    load: float = 0.0
     history: List[Any] = field(default_factory=list)
+    _load: float = field(default=0.0, repr=False)
 
     def __post_init__(self):
         if not isinstance(self.load, (int, float)) or not (0.0 <= self.load <= 1.0):
-            raise ValueError(f"Agent load must be between 0.0 and 1.0, but got {self.load}.")
+            raise ValueError(
+                f"Agent load must be between 0.0 and 1.0, but got {self.load}."
+            )
         # Validate capabilities
         self.capabilities = np.array(self.capabilities, dtype=float)
         norm = np.linalg.norm(self.capabilities)
@@ -54,14 +59,17 @@ class Agent:
         self.history.append(entry)
 
     def __repr__(self) -> str:
-        caps_str = np.array2string(self.capabilities, precision=2, floatmode='fixed')
-        return (f"Agent(id='{self.id}', load={self.load:.2f}, "
-                f"capabilities={caps_str})")
+        caps_str = np.array2string(self.capabilities, precision=2, floatmode="fixed")
+        return (
+            f"Agent(id='{self.id}', load={self.load:.2f}, " f"capabilities={caps_str})"
+        )
+
 
 class AgentPool:
     """
     A container to manage the swarm of all active micro-cell agents.
     """
+
     def __init__(self):
         self.agents: List[Agent] = []
         self._agent_map: Dict[str, Agent] = {}
@@ -94,11 +102,15 @@ class AgentPool:
     def as_dataframe(self):
         try:
             import pandas as pd
-            data = [{
-                "id": a.id,
-                "load": a.load,
-                **{f"cap_{i}": v for i, v in enumerate(a.capabilities)}
-            } for a in self.agents]
+
+            data = [
+                {
+                    "id": a.id,
+                    "load": a.load,
+                    **{f"cap_{i}": v for i, v in enumerate(a.capabilities)},
+                }
+                for a in self.agents
+            ]
             return pd.DataFrame(data)
         except ImportError:
             logger.warning("Pandas not installed. DataFrame export unavailable.")
@@ -106,3 +118,22 @@ class AgentPool:
 
     def __repr__(self) -> str:
         return f"AgentPool(count={self.count})"
+
+    def find_best_agent(self, required_capabilities: np.ndarray) -> Optional[Agent]:
+        """
+        Finds the agent with the highest dot-product score to the required capabilities.
+        Returns None if there are no agents.
+        """
+        best = None
+        best_score = float("-inf")
+        req_norm = np.linalg.norm(required_capabilities)
+        if req_norm == 0:
+            raise ValueError("required_capabilities vector cannot be all zeros.")
+        for agent in self.agents:
+            score = np.dot(agent.capabilities, required_capabilities) / (
+                np.linalg.norm(agent.capabilities) * req_norm
+            )
+            if score > best_score:
+                best = agent
+                best_score = score
+        return best

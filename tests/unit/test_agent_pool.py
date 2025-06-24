@@ -22,6 +22,8 @@ def test_find_best_agent():
 def test_count_property():
     pool = AgentPool()
     for i in range(3):
-        pool.add_agent(Agent(id=f"a{i}", capabilities=np.array([i, i])))
+        # Ensure capability vector is not all zeros
+        cap = np.array([i, 1.0]) if i == 0 else np.array([i, i])
+        pool.add_agent(Agent(id=f"a{i}", capabilities=cap))
     assert pool.count == 3
 

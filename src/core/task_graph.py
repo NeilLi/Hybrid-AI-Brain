@@ -96,6 +96,8 @@ class TaskGraph:
                 for u, v in self.graph.edges
             ],
         }
+    def topological_sort(self):
+        return self.topological_order()
 
     @classmethod
     def from_dict(cls, d: Dict[str, Any]) -> "TaskGraph":
