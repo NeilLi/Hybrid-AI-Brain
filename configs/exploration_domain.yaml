@@ -1,0 +1,35 @@
+# configs/exploration_domain.yaml
+# Manifest for the Exploration domain, designed for maximum discovery
+# and continuous learning in research environments. [source: Table 3, page 7]
+
+domain: exploration
+description: "Discovery mode for AI research and scientific hypothesis generation, with continuous bio-optimization enabled."
+
+parameters:
+  # --- Governance & Control ---
+  gM: 1                         # Bio-optimizer is always active. [source: 150]
+  error_tolerance: 0.20         # 20.0% error tolerance. [source: 152]
+  validation_period: "continuous" # [source: 156]
+  
+  # --- Safety Parameters ---
+  safety_samples: 32            # Relaxed sample count for faster exploration. [source: 153]
+  tau_safe_threshold: 0.6       # Lowered safety threshold. [source: 154]
+
+  # --- Memory Parameters ---
+  memory_capacity: 1024         # Increased memory capacity for discovery retention. [source: 156]
+
+  # --- Operational Parameters ---
+  recovery_sla: "best-effort"   # [source: 155]
+  typical_use_case: "AI Research, Scientific Discovery"
+
+# Configuration for the GNN Coordinator when in this domain
+coordinator_config:
+  temperature: 1.0              # High softmax temperature to encourage diverse assignments.
+  spectral_norm_clamp: 0.9      # Relaxed contractivity bound.
+  exploration_bonus: 0.2        # A bonus to reward novel assignments.
+
+# Metrics specifically for tracking success in the exploration domain
+discovery_metrics:
+  novelty_rate_target: "50 hypotheses/day"
+  cross_domain_insights_target: "10 connections/week"
+  computational_efficiency_metric: "optimize for breakthroughs"

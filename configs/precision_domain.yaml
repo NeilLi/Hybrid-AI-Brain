@@ -1,0 +1,37 @@
+# configs/precision_domain.yaml
+# Manifest for the Precision domain, designed for zero-tolerance,
+# safety-critical applications. [source: Table 3, page 7]
+
+domain: precision
+description: "Zero-tolerance mode for safety-critical applications like financial trading, with bio-optimization disabled for deterministic behavior."
+
+parameters:
+  # --- Governance & Control ---
+  gM: 0                         # Bio-optimizer is disabled. [source: 150]
+  error_tolerance: 0.0          # 0.0% error tolerance. [source: 152]
+  validation_period_hours: 72   # [source: 156]
+
+  # --- Safety Parameters ---
+  safety_samples: 116           # Highest number of samples for maximum safety assurance. [source: 153]
+  tau_safe_threshold: 0.8       # Highest, most conservative safety threshold. [source: 154]
+
+  # --- Memory Parameters ---
+  memory_capacity: 256          # A moderate, fixed memory capacity. [source: 156]
+
+  # --- Operational Parameters ---
+  recovery_sla: "immediate"     # SLA options: "immediate", "fast", "standard" [source: 155]
+  typical_use_case: "Financial Trading, Medical Systems"
+
+  # --- Explicitly Off ---
+  bio_optimizer: false          # Bio-optimizer intentionally disabled in this domain.
+
+coordinator_config:
+  temperature: 0.0              # Zero temperature for deterministic, greedy assignments.
+  spectral_norm_clamp: 0.5      # Strict contractivity bound.
+  convergence_check: true       # Enforce convergence checks.
+
+theoretical_guarantees:
+  convergence_probability: 1.0
+  convergence_steps: 2
+  parameter_stability: true
+  decision_determinism: true

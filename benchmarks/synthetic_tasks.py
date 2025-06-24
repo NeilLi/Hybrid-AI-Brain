@@ -1,0 +1,95 @@
+#!/usr/bin/env python3
+"""
+benchmarks/synthetic_tasks.py
+
+Generates synthetic TaskGraph instances for benchmarks and performance evaluation.
+"""
+
+import sys
+from pathlib import Path
+import numpy as np
+import networkx as nx
+from typing import List
+
+# Ensure the src directory is in the path for import resolution
+sys.path.append(str(Path(__file__).resolve().parents[1]))
+
+from src.core import TaskGraph
+
+def generate_synthetic_task_graph(
+    num_subtasks: int,
+    capability_dim: int,
+    dependency_prob: float = 0.3,
+    random_seed: int = None,
+) -> TaskGraph:
+    """
+    Generate a valid random TaskGraph (DAG) for benchmarking.
+    
+    Args:
+        num_subtasks: Number of subtask nodes in the graph.
+        capability_dim: Dimensionality of required capability vectors.
+        dependency_prob: Probability of creating a dependency between any two tasks.
+        random_seed: Optional. If set, ensures reproducible graphs.
+
+    Returns:
+        A TaskGraph instance with random nodes and edges (DAG).
+    """
+    if random_seed is not None:
+        np.random.seed(random_seed)
+
+    task_graph = TaskGraph()
+    task_ids = [f"subtask_{i}" for i in range(num_subtasks)]
+
+    # 1. Add subtask nodes with random capability requirements
+    for task_id in task_ids:
+        required_capabilities = np.random.rand(capability_dim)
+        task_graph.add_subtask(task_id, required_capabilities)
+
+    # 2. Add forward-only dependencies to guarantee acyclicity
+    for i in range(num_subtasks):
+        for j in range(i + 1, num_subtasks):
+            if np.random.rand() < dependency_prob:
+                try:
+                    risk = np.random.uniform(0.0, 0.5)
+                    task_graph.add_dependency(task_ids[i], task_ids[j], risk=risk)
+                except ValueError:
+                    # Should not happen with forward-only edges, but handled defensively
+                    pass
+
+    return task_graph
+
+def print_task_graph_summary(task_graph: TaskGraph):
+    """Utility to print a summary of the generated task graph."""
+    print("\n--- Generated TaskGraph ---")
+    print(f"Subtasks: {task_graph.get_all_subtasks()}")
+    print("Dependencies (with risk):")
+    for edge in task_graph.graph.edges(data=True):
+        print(f"  {edge[0]} -> {edge[1]}   (risk={edge[2].get('risk', 0):.3f})")
+
+def main():
+    print("====== Benchmarks: Synthetic Task Generator Demo ======")
+
+    params = dict(
+        num_subtasks=5,
+        capability_dim=10,
+        dependency_prob=0.4,
+        random_seed=42,   # For reproducibility in demos/CI
+    )
+
+    print("\n--- Generating a synthetic task graph with parameters: ---")
+    print(params)
+    synthetic_task = generate_synthetic_task_graph(**params)
+    print_task_graph_summary(synthetic_task)
+
+    is_dag = nx.is_directed_acyclic_graph(synthetic_task.graph)
+    print(f"\nIs the generated graph a DAG? {'✅ Yes' if is_dag else '❌ No'}")
+    if is_dag:
+        print("VALIDATED: The synthetic task graph is acyclic and ready for use.")
+    else:
+        print("ERROR: The generated task graph contains a cycle!")
+
+    print("\n=======================================================")
+    print("✅ synthetic_tasks.py executed successfully!")
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,40 @@
+# configs/default_params.yaml
+# Default parameter recommendations from the Hybrid AI Brain paper,
+# providing a single source of truth for theoretical and system constants.
+
+description: "Default parameter values derived from the theoretical analysis in the Hybrid AI Brain paper."
+
+theoretical_parameters:
+  beta: 2.0          # Assignment sharpness (β ≥ 1) [source: 94]
+  theta: 0.5         # Capability threshold (θ) [source: 95]
+  alpha: 1.5         # Load penalty exponent (α ∈ [1,2]) [source: 96]
+  lambda_risk: 1.0   # Risk weighting parameter (λ_risk) [source: 97]
+  lambda_d: 0.45     # Memory decay rate (λ_d) [source: 112, 834]
+  gamma: 2.7         # Consolidation trigger (γ), seconds [source: 105]
+  W_max: 50          # Max flashbulb buffer weight [source: 102]
+  c_bar: 0.8         # Mean confidence score for new memory items [source: 109]
+
+# System-wide parameters for performance modeling.
+system_parameters:
+  agent_count: 10
+  message_dimension: 128
+  spectral_norm_bound: 0.7         # (L_total) [source: 1445]
+  queue_utilization: 0.8           # (ρ') [source: 852]
+  service_rate_per_agent: 5.0      # μ' (tasks/sec/agent) [source: 846]
+  task_arrival_rate: 20.0          # λ (tasks/sec) [source: 847]
+
+performance_targets:
+  convergence_steps: 2.0
+  convergence_probability: 0.87
+  false_block_rate: 0.0001         # <= 1e-4
+  memory_staleness_seconds: 3.0    # < 3s
+  expected_latency_seconds: 0.5    # <= 0.5s
+
+implementation_specific:
+  gnn_layers: 2
+  gnn_hidden_dim: 128
+  bio_optimizer:
+    population_size: 50
+    generations: 100
+  flashbulb_buffer_capacity: 100   # θ
+  working_memory_capacity: 200     # φ

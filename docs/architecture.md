@@ -1,0 +1,3 @@
+"""
+Stub for architecture.md
+"""

@@ -1,0 +1,36 @@
+# configs/adaptive_domain.yaml
+# Manifest for the Adaptive domain, designed for balanced performance
+# and periodic re-optimization. [source: Table 3, page 7]
+
+domain: adaptive
+description: "Balanced mode for general-purpose applications like cloud operations, with scheduled bio-optimization."
+
+parameters:
+  # --- Governance & Control ---
+  gM: "scheduled"               # Bio-optimizer is run periodically. [source: 150]
+  error_tolerance: 0.05         # 5.0% error tolerance. [source: 152]
+  validation_period_hours: 24   # [source: 156]
+  
+  # --- Safety Parameters ---
+  safety_samples: 59            # n_samples for safety checks. [source: 153]
+  tau_safe_threshold: 0.7       # Safety blocking threshold τ_safe. [source: 154]
+  
+  # --- Memory Parameters ---
+  memory_capacity: "standard"   # Use default memory capacity. [source: 156]
+  
+  # --- Operational Parameters ---
+  recovery_sla: "300s"          # Service Level Agreement for recovery. [source: 155]
+  typical_use_case: "Cloud Resource Orchestration"
+
+# Configuration for the GNN Coordinator when in this domain
+coordinator_config:
+  temperature: 0.5              # Softmax temperature (β) for assignments.
+  spectral_norm_clamp: 0.7      # Lipschitz constant bound.
+  adaptive_learning: true       # Allow the GNN to adapt.
+
+# Bio-inspired algorithm specific settings for this domain
+bio_optimization:
+  delta_bio: "2s"               # Bio-inspired update period. [source: 411]
+  delta_gnn: "0.2s"             # GNN forward pass period. [source: 411]
+  phi_schedule: [0.1, 1.0]      # Bio-inspired activation schedule. [source: 151]
+  conflict_resolution: true     # Enable ABC for conflict resolution.
