@@ -3,10 +3,10 @@
 **By Neil Li (Ning Li) - Independent Researcher**  
 **Version 1.0 - June 2025**
 
-[![arXiv](https://img.shields.io/badge/arXiv-Preprint-b31b1b.svg)](https://arxiv.org/abs/YOUR_ARXIV_ID_HERE)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Status: Research](https://img.shields.io/badge/Status-Research-blue.svg)](https://github.com/NeilLi/Hybrid-AI-Brain)
 [![Tests](https://img.shields.io/badge/Tests-Passing-green.svg)](https://github.com/NeilLi/Hybrid-AI-Brain/actions)
+[![Paper](https://img.shields.io/badge/Paper-Available-brightgreen.svg)](hybrid_ai_brain_v1.0.pdf)
 
 This repository contains the research paper and supplementary materials for "Hybrid AI Brain," the first formally verified multi-agent AI framework with provable performance guarantees for convergence, safety, and latency.
 
@@ -74,10 +74,11 @@ We present the Hybrid AI Brain, the first multi-agent control plane that provabl
 
 With concrete parameter settings we prove Pr[convergence ≤ 2] ≥ 0.87, false-block rate ≤ 10⁻⁴, memory staleness < 3s, and expected task latency ≤ 0.5s. All constants are explicit, removing heuristic tuning.
 
-## 📚 **Access the Full Paper**
+## 📚 **Access the Research Paper**
 
-- **[📖 Read on arXiv](https://arxiv.org/abs/YOUR_ARXIV_ID_HERE)** *(Add this link once available)*
-- **[📄 PDF in Repository](hybrid_ai_brain_v1.0.pdf)** - Direct access to the full paper
+- **[📄 Full Paper (PDF)](hybrid_ai_brain_v1.0.pdf)** - Complete research paper with theoretical proofs and experimental validation
+- **[📖 Online Documentation](docs/)** - Interactive documentation with examples and tutorials
+- **[🔬 Supplementary Materials](supplementary/)** - Additional proofs, datasets, and experimental details
 
 ## 🎯 **Key Contributions**
 
@@ -203,7 +204,7 @@ python tools/export_metrics.py --format json --output results/
 
 | Component | Status | Coverage | Notes |
 |-----------|--------|----------|-------|
-| **Paper** | ✅ Complete | 100% | Peer review ready |
+| **Paper** | ✅ Complete | 100% | Available in repository |
 | **Core Implementation** | ✅ Complete | 95% | Python/PyTorch |
 | **Theoretical Validation** | ✅ Complete | 100% | Automated test suite |
 | **Benchmarks** | ✅ Complete | 85% | Multi-domain scenarios |
@@ -226,9 +227,8 @@ This work bridges several research areas:
       title={Hybrid AI Brain: Integrated Micro-Cell Swarm Architecture with Cognitive Graph Reasoning and Memory}, 
       author={Neil Li},
       year={2025},
-      eprint={YOUR_ARXIV_ID_HERE},
-      archivePrefix={arXiv},
-      primaryClass={cs.AI}
+      note={Available at: https://github.com/NeilLi/Hybrid-AI-Brain},
+      url={https://github.com/NeilLi/Hybrid-AI-Brain}
 }
 ```
 
@@ -244,7 +244,7 @@ We welcome discussions and feedback on this research:
 ### Development Setup
 ```bash
 # Install development dependencies
-pip install -r requirements-dev.txt
+pip install -r requirements.txt
 
 # Run pre-commit hooks
 pre-commit install
@@ -264,6 +264,19 @@ The system includes comprehensive monitoring and observability:
 - **Theoretical Compliance**: Automated alerts when guarantees are violated
 - **Debugging Tools**: Swarm visualization and coordination flow analysis
 - **Benchmarking**: Continuous integration with performance regression detection
+
+## 🔬 **Research Impact & Applications**
+
+### Academic Applications
+- **Benchmark Dataset**: Standardized evaluation for multi-agent coordination
+- **Theoretical Framework**: Formal verification techniques for AI systems
+- **Algorithmic Contributions**: Novel integration of swarm intelligence and GNNs
+
+### Industry Applications
+- **Cloud Computing**: Resource orchestration with guaranteed SLA compliance
+- **Robotics**: Multi-robot coordination with safety guarantees
+- **Financial Systems**: High-frequency trading with risk bounds
+- **IoT Networks**: Distributed sensor coordination and data processing
 
 ## 📄 **License**
 

@@ -1,0 +1,18 @@
+# --- Python noise --------------------------------------------------
+__pycache__/
+*.py[cod]
+*.pyd
+*.so
+*.dylib
+*.egg-info/
+.pytest_cache/
+
+# --- Virtual-envs --------------------------------------------------
+venv/
+.env/
+env/
+
+# --- Project-specific data ----------------------------------------
+data/
+benchmark_results/
+
