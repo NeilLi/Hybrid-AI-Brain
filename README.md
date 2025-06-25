@@ -3,9 +3,9 @@
 **By Neil Li (Ning Li) - Independent Researcher**  
 **Version 1.0 - June 2025**
 
+[![tests](https://github.com/NeilLi/Hybrid-AI-Brain/actions/workflows/tests.yml/badge.svg)](https://github.com/NeilLi/Hybrid-AI-Brain/actions/workflows/tests.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Status: Research](https://img.shields.io/badge/Status-Research-blue.svg)](https://github.com/NeilLi/Hybrid-AI-Brain)
-[![Tests](https://img.shields.io/badge/Tests-Passing-green.svg)](https://github.com/NeilLi/Hybrid-AI-Brain/actions)
 [![Paper](https://img.shields.io/badge/Paper-Available-brightgreen.svg)](hybrid_ai_brain_v1.0.pdf)
 
 This repository contains the research paper and supplementary materials for "Hybrid AI Brain," the first formally verified multi-agent AI framework with provable performance guarantees for convergence, safety, and latency.
