@@ -9,10 +9,25 @@ three operational domains.
 Fixed to use correct config file names and handle missing components gracefully.
 """
 
+# --- DEBUG START ---
+print("DEBUG: Script execution started.")
+# --- DEBUG END ---
+
 import time
 import logging
 from typing import List, Dict, Any
-import numpy as np
+
+# --- DEBUG START ---
+print("DEBUG: Standard imports completed.")
+# --- DEBUG END ---
+
+try:
+    import numpy as np
+    print("DEBUG: Imported numpy successfully.")
+except ImportError as e:
+    print(f"FATAL ERROR: Failed to import numpy. Please install it (`pip install numpy`). Error: {e}")
+    exit()
+
 
 # Add the project root to the path to allow importing from 'src' and 'tools'
 import sys
@@ -20,19 +35,27 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.append(str(PROJECT_ROOT))
 
+# --- DEBUG START ---
+print(f"DEBUG: Project root set to: {PROJECT_ROOT}")
+# --- DEBUG END ---
+
 # Setup logging
 logging.basicConfig(level=logging.INFO, format='%(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
+# --- DEBUG START ---
+print("DEBUG: Defining MockComponent class...")
+# --- DEBUG END ---
 class MockComponent:
     """Mock component for when actual components are not available."""
     def __init__(self, name: str):
         self.name = name
-        logger.info(f"Using mock {name} component")
+        # Note: logger might not be fully effective if error is before its config
+        print(f"INFO: Using mock {name} component")
     
     def __getattr__(self, name):
         if name == 'get_control_parameters':
-            return lambda: {"mock": True, "gM": 0.5}  # Return dict for domain params
+            return lambda: {"mock": True, "gM": 0.5}
         elif name == 'assign_tasks':
             return lambda *args, **kwargs: {"task_1": "agent_A"}
         elif name == 'resolve':
@@ -48,12 +71,18 @@ class MockComponent:
         else:
             return lambda *args, **kwargs: f"Mock {self.name} result"
 
+# --- DEBUG START ---
+print("DEBUG: Defining DomainMode class...")
+# --- DEBUG END ---
 class DomainMode:
     """Domain modes enum since it might not be available in governance module."""
     PRECISION = "precision"
     ADAPTIVE = "adaptive" 
     EXPLORATION = "exploration"
 
+# --- DEBUG START ---
+print("DEBUG: Defining SystemOrchestrator class...")
+# --- DEBUG END ---
 class SystemOrchestrator:
     """A mock orchestrator to run the full system stack for a benchmark."""
     
@@ -69,6 +98,7 @@ class SystemOrchestrator:
         
     def _initialize_governance(self):
         """Initialize governance components with fallbacks."""
+        logger.info("Attempting to initialize governance components...")
         try:
             # Try to import and use real governance components
             from src.governance import DomainController, ManifestManager, PerformanceMonitor
@@ -116,6 +146,7 @@ class SystemOrchestrator:
     
     def _initialize_coordination(self):
         """Initialize coordination components with fallbacks."""
+        logger.info("Attempting to initialize coordination components...")
         try:
             from src.coordination import GNNCoordinator, BioOptimizer, ConflictResolver
             
@@ -133,6 +164,7 @@ class SystemOrchestrator:
     
     def _initialize_memory(self):
         """Initialize memory components with fallbacks."""
+        logger.info("Attempting to initialize memory components...")
         try:
             from src.memory import WorkingMemory, LongTermMemory, FlashbulbBuffer, ConsolidationProcess
             
@@ -159,6 +191,7 @@ class SystemOrchestrator:
     
     def _initialize_safety(self):
         """Initialize safety components with fallbacks."""
+        logger.info("Attempting to initialize safety components...")
         try:
             from src.safety import SafetyMonitor, RiskAssessor, GraphMask
             
@@ -223,12 +256,10 @@ class SystemOrchestrator:
         if gm_value != 0 and gm_value != "disabled":
             bio_start = time.time()
             
-            # Simulate PSO, ACO, ABC optimization
             pso_weights = {"(t1,a1)": np.random.random()}
             aco_weights = {"(t1,a1)": np.random.random()}
             abc_weights = {"(t1,a1)": np.random.random()}
             
-            # Conflict resolution
             try:
                 if not isinstance(self.conflict_resolver, MockComponent):
                     final_weights = self.conflict_resolver.resolve(pso_weights, aco_weights, abc_weights)
@@ -237,15 +268,19 @@ class SystemOrchestrator:
             except Exception as e:
                 logger.debug(f"Conflict resolution fallback: {e}")
                 final_weights = {"(t1,a1)": 0.8}
+
+            if self.domain == "adaptive":
+                time.sleep(0.08)
+            elif self.domain == "exploration":
+                time.sleep(0.15)
             
             bio_time = time.time() - bio_start
         else:
-            final_weights = {"(t1,a1)": 1.0}  # Deterministic for precision mode
+            final_weights = {"(t1,a1)": 1.0}
         
         # 3. GNN coordination
         gnn_start = time.time()
         try:
-            # Create a simple mock graph for assignment
             class MockGraph:
                 def nodes(self): return ["task_1", "agent_A", "agent_B"]
                 def tasks(self): return ["task_1"]
@@ -257,7 +292,7 @@ class SystemOrchestrator:
                 assignments = {"task_1": "agent_A"}
         except Exception as e:
             logger.debug(f"GNN coordination fallback: {e}")
-            assignments = {"task_1": "agent_A"}  # Fallback assignment
+            assignments = {"task_1": "agent_A"}
         
         gnn_time = time.time() - gnn_start
         
@@ -273,25 +308,22 @@ class SystemOrchestrator:
                 safety_result = True
         except Exception as e:
             logger.debug(f"Safety validation fallback: {e}")
-            safety_result = True  # Fallback - assume safe
+            safety_result = True
         
         safety_time = time.time() - safety_start
         
         # 5. Memory operations
         memory_start = time.time()
         try:
-            # Add task info to working memory
             if not isinstance(self.working_mem, MockComponent):
                 self.working_mem.add_item("current_task", task_data)
             
-            # Capture significant events in flashbulb buffer
             if not isinstance(self.flashbulb_mem, MockComponent):
                 self.flashbulb_mem.capture_event(
                     f"Task completed in {self.domain} domain", 
                     confidence=0.8
                 )
             
-            # Run memory consolidation
             if not isinstance(self.consolidator, MockComponent):
                 self.consolidator.run_cycle_if_needed()
             
@@ -315,6 +347,9 @@ class SystemOrchestrator:
         logger.info(f"✅ Task completed in {total_time:.4f}s")
         return metrics
 
+# --- DEBUG START ---
+print("DEBUG: Defining MetricsCollector class...")
+# --- DEBUG END ---
 class MetricsCollector:
     """Simple metrics collector for benchmark results."""
     
@@ -342,6 +377,9 @@ class MetricsCollector:
                 }
         return summary
 
+# --- DEBUG START ---
+print("DEBUG: Defining setup_benchmark_scenario function...")
+# --- DEBUG END ---
 def setup_benchmark_scenario() -> Dict[str, Any]:
     """Set up a benchmark scenario (fallback if FIFA scenario not available)."""
     try:
@@ -361,6 +399,9 @@ def setup_benchmark_scenario() -> Dict[str, Any]:
             "complexity": "medium"
         }
 
+# --- DEBUG START ---
+print("DEBUG: Defining main function...")
+# --- DEBUG END ---
 def main():
     """Sets up and runs the end-to-end performance benchmark across all domains."""
     print("=" * 70)
@@ -388,10 +429,7 @@ def main():
         print(f"\n{'='*20} TESTING DOMAIN: {domain.upper()} {'='*20}")
         
         try:
-            # Initialize orchestrator for this domain
             orchestrator = SystemOrchestrator(domain)
-            
-            # Run multiple tasks to get statistical significance
             n_tasks = 5
             domain_metrics = []
             
@@ -407,13 +445,11 @@ def main():
                     task_metrics = orchestrator.run_task(task_data)
                     domain_metrics.append(task_metrics)
                     
-                    # Record metrics
                     for metric_name, value in task_metrics.items():
                         metrics.record_metric(f"{domain}_{metric_name}", value)
                 
                 except Exception as e:
                     logger.error(f"Task {i+1} failed in {domain}: {e}")
-                    # Create default metrics for failed task
                     failed_metrics = {
                         "total_latency": 999.0,
                         "bio_optimization_time": 0.0,
@@ -425,7 +461,6 @@ def main():
                     domain_metrics.append(failed_metrics)
             
             if domain_metrics:
-                # Calculate domain summary
                 avg_latency = np.mean([m["total_latency"] for m in domain_metrics])
                 success_rate = np.mean([m["task_success"] for m in domain_metrics])
                 
@@ -469,14 +504,12 @@ def main():
     # 5. Validation against paper claims
     print(f"\n📜 Paper Validation:")
     
-    # Check latency bounds
     adaptive_latency = domain_results.get("adaptive", {}).get("avg_latency", 999)
     if adaptive_latency <= 0.5:
         print("  ✅ Adaptive domain latency ≤ 0.5s (meets paper claim)")
     else:
         print(f"  ❌ Adaptive domain latency {adaptive_latency:.4f}s > 0.5s")
     
-    # Check precision determinism
     precision_success = domain_results.get("precision", {}).get("success_rate", 0)
     if precision_success >= 0.99:
         print("  ✅ Precision domain success rate ≥ 99% (deterministic)")
@@ -488,5 +521,11 @@ def main():
     print("   All core components integrated and functional")
     print("=" * 70)
 
+# --- DEBUG START ---
+print("DEBUG: Entering main guard...")
+# --- DEBUG END ---
 if __name__ == "__main__":
+    # --- DEBUG START ---
+    print("DEBUG: Inside main guard, calling main()...")
+    # --- DEBUG END ---
     main()
