@@ -3,19 +3,20 @@
 src/coordination/conflict_resolver.py
 
 Implements the conflict resolution protocol that merges signals from
-different bio-inspired algorithms.
+different bio-inspired algorithms, as per the Hybrid AI Brain paper.
 """
 
 import logging
 from typing import Dict, Tuple
 
+# --- Setup Logging ---
 logger = logging.getLogger("hybrid_ai_brain.conflict_resolver")
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.INFO, format='%(levelname)s - %(message)s')
 
 class ConflictResolver:
     """
     Resolves conflicting edge weights from PSO and ACO using ABC-provided weights,
-    implementing Equation 39 of the Hybrid AI Brain paper.
+    implementing Equation 9 of the Hybrid AI Brain paper.
     """
     def __init__(self):
         logger.info("ConflictResolver initialized.")
@@ -24,8 +25,7 @@ class ConflictResolver:
         self,
         pso_weights: Dict[str, float],
         aco_weights: Dict[str, float],
-        mixing_weights: Tuple[float, float],
-        normalize: bool = False
+        mixing_weights: Tuple[float, float]
     ) -> Dict[str, float]:
         """
         Resolves final edge weights:
@@ -35,7 +35,6 @@ class ConflictResolver:
             pso_weights: Proposed edge weights from PSO.
             aco_weights: Proposed edge weights from ACO.
             mixing_weights: Tuple (λ_PSO, λ_ACO) from ABC. Should sum to 1.
-            normalize: If True, normalize output weights to [0,1] range.
 
         Returns:
             Dictionary of resolved edge weights.
@@ -43,55 +42,71 @@ class ConflictResolver:
         lambda_pso, lambda_aco = mixing_weights
         total_lambda = lambda_pso + lambda_aco
         if abs(total_lambda - 1.0) > 1e-6:
-            logger.warning("Mixing weights do not sum to 1. Normalizing.")
+            # Normalize weights if they don't sum to 1, as a safeguard.
+            logger.warning(
+                f"Mixing weights ({lambda_pso}, {lambda_aco}) do not sum to 1. Normalizing."
+            )
             lambda_pso /= total_lambda
             lambda_aco /= total_lambda
 
         logger.info(f"Resolving with weights λ_PSO={lambda_pso:.2f}, λ_ACO={lambda_aco:.2f}.")
 
-        # Union of all edges
+        # Get the union of all edges proposed by either algorithm
         all_edges = set(pso_weights.keys()) | set(aco_weights.keys())
 
         final_weights = {}
         for edge in all_edges:
-            w_pso = pso_weights.get(edge, 0.0)
+            w_pso = pso_weights.get(edge, 0.0) # Default to 0 if an edge is not in the proposal
             w_aco = aco_weights.get(edge, 0.0)
-            resolved = (lambda_pso * w_pso) + (lambda_aco * w_aco)
-            final_weights[edge] = resolved
-
-        if normalize and final_weights:
-            max_w = max(final_weights.values())
-            min_w = min(final_weights.values())
-            range_w = max_w - min_w if max_w != min_w else 1
-            for k in final_weights:
-                final_weights[k] = (final_weights[k] - min_w) / range_w
+            resolved_weight = (lambda_pso * w_pso) + (lambda_aco * w_aco)
+            final_weights[edge] = resolved_weight
+            logger.debug(f"  - Edge '{edge}': Resolved weight = {resolved_weight:.3f}")
 
         logger.info("Unified edge weights created.")
         return final_weights
 
 def main():
+    """
+    Demo function updated to simulate the "Detailed Conflict Resolution Scenario"
+    from Section 6.4.1 of the paper.
+    """
     logger.info("====== Coordination Layer: ConflictResolver Demo ======")
     resolver = ConflictResolver()
 
-    pso_props = {"(t1,a1)": 0.9, "(t1,a2)": 0.3}
-    aco_props = {"(t1,a1)": 0.4, "(t1,a2)": 0.8}
+    # --- Setup the scenario from the paper ---
+    # PSO tactically favors the generalist Agent A for coordination efficiency.
+    pso_proposals = {
+        "(sentiment, Agent A)": 0.78, 
+        "(sentiment, Agent B)": 0.65 
+    }
+    
+    # ACO's memory/history strongly favors the specialist Agent B.
+    aco_proposals = {
+        "(sentiment, Agent A)": 0.40, 
+        "(sentiment, Agent B)": 0.85
+    }
+    
+    print("\n--- [SCENARIO 1: High-Conflict 'Sentiment Analysis'] ---")
+    # In a high-conflict scenario, ABC's strategy is to favor history (ACO).
+    abc_weights_conflict = (0.2, 0.8)
+    final_weights_1 = resolver.resolve(pso_proposals, aco_proposals, abc_weights_conflict)
+    print("Final resolved weights (favoring ACO):")
+    for edge, weight in final_weights_1.items():
+        print(f"  {edge}: {weight:.3f}")
+    print(f"==> Result: The system prioritizes '{max(final_weights_1, key=final_weights_1.get)}'")
 
-    # Example 1: Balanced weights
-    abc_weights = (0.5, 0.5)
-    logger.info("--- Resolving with balanced weights ---")
-    final = resolver.resolve(pso_props, aco_props, abc_weights)
-    print("Final resolved weights:", {k: f"{v:.2f}" for k, v in final.items()})
 
-    # Example 2: Favor ACO (after detected conflict)
-    abc_weights_adjusted = (0.2, 0.8)
-    logger.info("--- Resolving with ABC favoring ACO ---")
-    final_adjusted = resolver.resolve(pso_props, aco_props, abc_weights_adjusted)
-    print("Final resolved weights:", {k: f"{v:.2f}" for k, v in final_adjusted.items()})
+    print("\n--- [SCENARIO 2: Context Shift to 'Multilingual Analysis'] ---")
+    # When the context shifts, ABC's strategy changes to favor the generalist (PSO).
+    abc_weights_multilingual = (0.75, 0.25)
+    final_weights_2 = resolver.resolve(pso_proposals, aco_proposals, abc_weights_multilingual)
+    print("Final resolved weights (favoring PSO):")
+    for edge, weight in final_weights_2.items():
+        print(f"  {edge}: {weight:.3f}")
+    print(f"==> Result: The system now prioritizes '{max(final_weights_2, key=final_weights_2.get)}'")
+    
+    logger.info("\n====== Demo complete. ======")
 
-    # Example 3: Normalization
-    logger.info("--- Resolving with normalization ---")
-    final_norm = resolver.resolve(pso_props, aco_props, abc_weights, normalize=True)
-    print("Final resolved weights (normalized):", {k: f"{v:.2f}" for k, v in final_norm.items()})
 
 if __name__ == "__main__":
     main()
