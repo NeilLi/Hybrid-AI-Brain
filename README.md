@@ -1,4 +1,4 @@
-# Hybrid AI Brain: Integrated Micro-Cell Swarm Architecture with Cognitive Graph Reasoning and Memory
+# Hybrid AI Brain: Provably Safe Multi-Agent Coordination with Graph Reasoning
 
 **By Neil Li (Ning Li) - Independent Researcher**  
 **Version 1.0 - June 2025**
@@ -224,7 +224,7 @@ This work bridges several research areas:
 
 ```bibtex
 @misc{li2025hybrid,
-      title={Hybrid AI Brain: Integrated Micro-Cell Swarm Architecture with Cognitive Graph Reasoning and Memory}, 
+      title={Hybrid AI Brain: Provably Safe Multi-Agent Coordination with Graph Reasoning}, 
       author={Neil Li},
       year={2025},
       note={Available at: https://github.com/NeilLi/Hybrid-AI-Brain},
