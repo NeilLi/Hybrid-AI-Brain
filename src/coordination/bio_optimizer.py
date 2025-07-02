@@ -125,21 +125,30 @@ class PSOOptimizer:
             
             # Update global best
             if fitness > self.global_best_fitness:
+                # Update only if the *projected* position is still within bounds
+                safe_pos = self.safety_constraints.enforce_lipschitz_constraint(
+                    particle.position.copy()
+                )
+                self.global_best_position = safe_pos
                 self.global_best_fitness = fitness
-                self.global_best_position = particle.position.copy()
         
         # Update velocities and positions
         for particle in self.particles:
-            r1, r2 = np.random.rand(2)
-            
-            # Velocity update with safety constraints
-            cognitive = self.c1 * r1 * (particle.best_position - particle.position)
-            social = self.c2 * r2 * (self.global_best_position - particle.position)
-            particle.velocity = self.w * particle.velocity + cognitive + social
-            
-            # Position update with Lipschitz constraint
-            new_position = particle.position + particle.velocity
-            particle.position = self.safety_constraints.enforce_lipschitz_constraint(new_position)
+            r1, r2 = np.random.rand(self.dim), np.random.rand(self.dim)
+            particle.velocity = (
+                self.w * particle.velocity
+                + self.c1 * r1 * (particle.best_position - particle.position)
+                + self.c2 * r2 * (self.global_best_position - particle.position)
+            )
+            # 1) clamp velocity to ±0.2 · dim-sqrt  (constriction factor)
+            vmax = 0.2 * np.sqrt(self.dim)
+            particle.velocity = np.clip(particle.velocity, -vmax, vmax)
+
+            # 2) update position, then **project** to Lipschitz ball
+            particle.position += particle.velocity
+            particle.position = self.safety_constraints.enforce_lipschitz_constraint(
+                particle.position
+            )
             particle.position = np.clip(particle.position, 0, 1)  # Keep in valid range
         
         best_agent = max(agent_fitness_scores, key=agent_fitness_scores.get) if agent_fitness_scores else None

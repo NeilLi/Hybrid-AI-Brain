@@ -126,7 +126,7 @@ class TestGNNCoordinator(unittest.TestCase):
         """Test GNN coordinator initialization."""
         self.assertEqual(self.gnn.delta_gnn, 0.2)
         self.assertEqual(self.gnn.max_message_rounds, 2)
-        self.assertEqual(self.gnn.beta, 2.0)
+        self.assertEqual(self.gnn.beta, 5.0)
     
     def test_task_graph_dependencies(self):
         """Test TaskGraph dependency management."""

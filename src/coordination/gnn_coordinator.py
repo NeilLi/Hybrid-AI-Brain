@@ -342,7 +342,7 @@ class BiGNNCoordinator:
                 
                 # Update agent load
                 if best_agent in self.agent_nodes:
-                    self.agent_nodes[best_agent].current_load += 0.2
+                    self.agent_nodes[best_agent].current_load += 0.1
         
         return assignments
     
