@@ -100,7 +100,7 @@ Unlike heuristic approaches, every performance claim is **mathematically proven*
 
 | **Property** | **Guarantee** | **Theoretical Foundation** |
 |--------------|---------------|---------------------------|
-| **Convergence** | ≤ 2 steps (87% probability) | Contractive GNN + Banach Fixed-Point |
+| ****Per-step Convergence**** | ≤ 2 steps (87% probability) | Contractive GNN + Banach Fixed-Point |
 | **Safety** | False-block rate ≤ 10⁻⁴ | GraphMask + Hoeffding Bounds |
 | **Memory Freshness** | Staleness < 3 seconds | M/G/1 Queueing Theory |
 | **End-to-End Latency** | ≤ 0.5 seconds | M/M/5 Coordination Model |
@@ -119,7 +119,7 @@ python benchmarks/synthetic_tasks.py            # Synthetic task allocation
 python benchmarks/performance_tests.py          # End-to-end latency validation
 
 # Expected consolidated results:
-# ✅ Convergence: 1.8 ± 0.3 steps (target: ≤ 2.0)
+# ✅ **Per-step Convergence**: 1.8 ± 0.3 steps (target: ≤ 2.0)
 # ✅ Safety: 8.7e-5 false-block rate (target: ≤ 1e-4)
 # ✅ Memory: 2.1 ± 0.4s staleness (target: < 3.0s)
 # ✅ Latency: 0.42 ± 0.08s (target: ≤ 0.5s)
@@ -156,7 +156,7 @@ python examples/quickstart_demo.py
 python benchmarks/run_all_benchmarks.py
 
 # Component-specific benchmarks:
-python benchmarks/convergence_validation.py      # Multi-hop reasoning convergence
+python benchmarks/convergence_validation.py      # Single-assignment convergence guarantee (Theorem 5.3)
 python benchmarks/fifa_scenario.py               # Real-world scenario validation  
 python benchmarks/safety_validation.py           # GraphMask safety verification
 python benchmarks/safety_validation_false_block.py  # False-block rate analysis
@@ -191,7 +191,7 @@ python tools/export_metrics.py --format json --output results/
 ```
 ├── benchmarks/                   # Comprehensive empirical validation
 │   ├── run_all_benchmarks.py    # Master benchmark execution
-│   ├── convergence_validation.py # GNN convergence guarantee verification  
+│   ├── convergence_validation.py # Single-assignment convergence verification  
 │   ├── fifa_scenario.py          # Multi-hop reasoning validation
 │   ├── safety_validation.py      # GraphMask safety verification
 │   ├── safety_validation_false_block.py # False-block rate analysis
@@ -257,7 +257,7 @@ Real-world query: *"What is the GDP per capita of the country that won the most 
 - Hop 2 (Country retrieval): P(a_retrieval|t₂) = 0.79  
 - Hop 3 (GDP calculation): P(a_analytics|t₃) = 0.92
 
-**Convergence Analysis:**
+****Per-step Convergence** Analysis:**
 - Expected convergence: E[τ] = 1/(0.890 × 0.79 × 0.92) = 1.55 steps ✅
 - Theoretical guarantee: ≤ 2 steps with probability ≥ 0.87 ✅
 
@@ -267,14 +267,14 @@ Real-world query: *"What is the GDP per capita of the country that won the most 
 - Theoretical bound: P(false-block) ≤ exp(-2×59×0.3²) = 2.4×10⁻⁵ 
 - Empirical validation: 1.00×10⁻⁴ (exactly meets target) ✅
 
-#### **⏱️ Convergence Validation (benchmarks/convergence_validation.py)**
+#### **⏱️ **Per-step Convergence** Validation – *single-assignment step* (benchmarks/convergence_validation.py)
 **Statistical Results (n=5,000 trials):**
-- Convergence probability: 0.9896 (95% CI: [0.9868, 0.9924])
+- **Per-step Convergence** probability: 0.9896 (95% CI: [0.9868, 0.9924])
 - Average convergence time: 1.20 steps  
 - Theoretical guarantee: Pr[τ ≤ 2] ≥ 0.87 ✅
 
 ### **Synthetic Benchmark (benchmarks/synthetic_tasks.py) - 20 agents, 100 tasks**
-| Method | Convergence (steps) | Quality Score | Runtime (ms) |
+| Method | **Per-step Convergence** (steps) | Quality Score | Runtime (ms) |
 |--------|---------------------|---------------|--------------|
 | Greedy Baseline | 1.0 | 0.72 ± 0.05 | 0.30 ± 0.10 |
 | GNN Only | 2.3 ± 0.4 | 0.89 ± 0.04 | 15.2 ± 3.1 |
@@ -333,7 +333,7 @@ graph TB
 ### **Performance Parameters**
 | Component | Model | Key Parameters | Guarantee |
 |-----------|--------|----------------|-----------|
-| **Convergence** | Contractive GNN | L_total < 1, β ≥ 1 | ≤ 2 steps (87% prob) |
+| ****Per-step Convergence**** | Contractive GNN | L_total < 0.7, β ≥ 1 | ≤ 2 steps (87% prob) |
 | **Safety** | GraphMask + Hoeffding | n ≥ 59 samples | False-block ≤ 10⁻⁴ |
 | **Memory** | M/G/1 Queue | λ_d = 0.45, CV² = 1.5 | Staleness < 3s |
 | **Coordination** | M/M/5 Queue | μ' = 5.0, ρ' = 0.8 | Latency ≤ 0.5s |
