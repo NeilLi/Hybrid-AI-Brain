@@ -14,17 +14,17 @@ from typing import List
 # Ensure the src directory is in the path for import resolution
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 
-from src.core import TaskGraph
+from src.core import LegacyTaskGraph as TaskGraph
+
 
 def generate_synthetic_task_graph(
     num_subtasks: int,
     capability_dim: int,
     dependency_prob: float = 0.3,
-    random_seed: int = None,
+    random_seed: int | None = None,
 ) -> TaskGraph:
-    """
-    Generate a valid random TaskGraph (DAG) for benchmarking.
-    
+    """Generate a valid random TaskGraph (DAG) for benchmarking.
+
     Args:
         num_subtasks: Number of subtask nodes in the graph.
         capability_dim: Dimensionality of required capability vectors.
@@ -49,47 +49,54 @@ def generate_synthetic_task_graph(
     for i in range(num_subtasks):
         for j in range(i + 1, num_subtasks):
             if np.random.rand() < dependency_prob:
-                try:
-                    risk = np.random.uniform(0.0, 0.5)
-                    task_graph.add_dependency(task_ids[i], task_ids[j], risk=risk)
-                except ValueError:
-                    # Should not happen with forward-only edges, but handled defensively
-                    pass
+                task_graph.add_dependency(task_ids[i], task_ids[j])
 
     return task_graph
 
-def print_task_graph_summary(task_graph: TaskGraph):
-    """Utility to print a summary of the generated task graph."""
-    print("\n--- Generated TaskGraph ---")
-    print(f"Subtasks: {task_graph.get_all_subtasks()}")
-    print("Dependencies (with risk):")
-    for edge in task_graph.graph.edges(data=True):
-        print(f"  {edge[0]} -> {edge[1]}   (risk={edge[2].get('risk', 0):.3f})")
 
-def main():
+def task_graph_stats(task_graph: TaskGraph) -> dict:
+    """Return simple statistics for a TaskGraph."""
+    num_nodes = len(task_graph.get_all_subtasks())
+    num_edges = len(task_graph.get_dependencies())
+    density = num_edges / (num_nodes * (num_nodes - 1) / 2) if num_nodes > 1 else 0
+    return {
+        "num_nodes": num_nodes,
+        "num_edges": num_edges,
+        "density": density,
+    }
+
+
+# ---------------------------------------------------------------------------
+# CLI / Demo
+# ---------------------------------------------------------------------------
+
+def main() -> None:  # pragma: no cover
     print("====== Benchmarks: Synthetic Task Generator Demo ======")
 
-    params = dict(
-        num_subtasks=5,
-        capability_dim=10,
-        dependency_prob=0.4,
-        random_seed=42,   # For reproducibility in demos/CI
-    )
+    # Default parameters for quick smoke test
+    params = {
+        "num_subtasks": 5,
+        "capability_dim": 10,
+        "dependency_prob": 0.4,
+        "random_seed": 42,
+    }
 
     print("\n--- Generating a synthetic task graph with parameters: ---")
     print(params)
+
     synthetic_task = generate_synthetic_task_graph(**params)
-    print_task_graph_summary(synthetic_task)
 
-    is_dag = nx.is_directed_acyclic_graph(synthetic_task.graph)
-    print(f"\nIs the generated graph a DAG? {'✅ Yes' if is_dag else '❌ No'}")
-    if is_dag:
-        print("VALIDATED: The synthetic task graph is acyclic and ready for use.")
-    else:
-        print("ERROR: The generated task graph contains a cycle!")
+    print("\n--- Task Graph Statistics ---")
+    stats = task_graph_stats(synthetic_task)
+    for k, v in stats.items():
+        print(f"{k:>12}: {v}")
 
-    print("\n=======================================================")
-    print("✅ synthetic_tasks.py executed successfully!")
+    print("\n--- Edge List ---")
+    for u, v in synthetic_task.get_dependencies():
+        print(f"{u} -> {v}")
+
+    print("\nSynthetic task graph generation completed successfully! 🎉")
+
 
 if __name__ == "__main__":
     main()
