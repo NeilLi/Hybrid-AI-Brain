@@ -2674,10 +2674,18 @@ if __name__ == "__main__":
     print("Starting Complete Hybrid AI Brain Demonstration Suite...")
     results = run_all_demonstrations()
     
+    # Get the directory where this script is located
+    script_dir = Path(__file__).parent
+    demo_dir = script_dir if script_dir.name == 'demo' else script_dir / 'demo'
+    
+    # Create demo directory if it doesn't exist
+    demo_dir.mkdir(exist_ok=True)
+    
     # Optional: Export states for analysis
     for version, result in results.items():
         if result:
             filename = f"system_state_{version.replace(' ', '_').replace(':', '').lower()}.json"
+            filepath = demo_dir / filename  # Save to demo directory
             try:
                 if isinstance(result, tuple):  # Version 4 returns (system, analytics)
                     system, analytics = result
@@ -2686,14 +2694,16 @@ if __name__ == "__main__":
                 else:
                     export_data = result.export_state()
                 
-                with open(filename, 'w') as f:
+                with open(filepath, 'w') as f:
                     json.dump(export_data, f, indent=2, default=str)
-                print(f"✓ {version} state exported to {filename}")
+                print(f"✓ {version} state exported to {filepath}")
             except Exception as e:
                 print(f"⚠️ Failed to export {version}: {e}")
     
     print(f"\n🎯 COMPLETE DEMONSTRATION SUITE FINISHED")
-    print(f"All four versions ready for production deployment!")#!/usr/bin/env python3
+    print(f"All four versions ready for production deployment!")
+    print(f"Results saved to: {demo_dir}")
+#!/usr/bin/env python3
 """
 Complete Hybrid AI Brain: Multi-Hop Workflow Production Implementation
 Following the rigorous theoretical framework from JAIR paper.
