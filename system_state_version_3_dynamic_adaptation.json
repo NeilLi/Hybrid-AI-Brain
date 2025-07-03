@@ -1,0 +1,960 @@
+{
+  "metadata": {
+    "export_time": 1751516487.290369,
+    "system_uptime": 2.6027328968048096,
+    "total_cycles": 15,
+    "version": "1.0.0"
+  },
+  "agents": {
+    "Agent_DataExtractor": {
+      "agent_id": "Agent_DataExtractor",
+      "capabilities": [
+        0.95,
+        0.6,
+        0.4,
+        0.3
+      ],
+      "current_load": 2.2000000000000006,
+      "performance_history": [],
+      "abc_role": "Employed",
+      "personal_best_fitness": 1.24,
+      "created_at": 1751516484.687744,
+      "last_updated": 1751516484.687745
+    },
+    "Agent_Transformer": {
+      "agent_id": "Agent_Transformer",
+      "capabilities": [
+        0.8,
+        0.7,
+        0.5,
+        0.4
+      ],
+      "current_load": 2.2000000000000006,
+      "performance_history": [],
+      "abc_role": "Employed",
+      "personal_best_fitness": 1.2000000000000002,
+      "created_at": 1751516484.687853,
+      "last_updated": 1751516484.687854
+    },
+    "Agent_Analyzer": {
+      "agent_id": "Agent_Analyzer",
+      "capabilities": [
+        0.4,
+        0.8,
+        0.95,
+        0.6
+      ],
+      "current_load": 2.3000000000000007,
+      "performance_history": [],
+      "abc_role": "Scout",
+      "personal_best_fitness": -Infinity,
+      "created_at": 1751516484.6879349,
+      "last_updated": 1751516484.6879349
+    },
+    "Agent_Synthesizer": {
+      "agent_id": "Agent_Synthesizer",
+      "capabilities": [
+        0.3,
+        0.7,
+        0.7,
+        0.95
+      ],
+      "current_load": 2.1000000000000005,
+      "performance_history": [],
+      "abc_role": "Onlooker",
+      "personal_best_fitness": -Infinity,
+      "created_at": 1751516484.6880152,
+      "last_updated": 1751516484.6880152
+    }
+  },
+  "tasks": {
+    "extract_customer_data": {
+      "task_id": "extract_customer_data",
+      "requirements": [
+        0.9,
+        0.5,
+        0.2,
+        0.1
+      ],
+      "dependencies": [],
+      "priority": 1.0,
+      "status": "assigned",
+      "assigned_agent": "Agent_Analyzer",
+      "created_at": 1751516484.688148,
+      "deadline": null,
+      "completion_time": null,
+      "metadata": {}
+    },
+    "extract_context_info": {
+      "task_id": "extract_context_info",
+      "requirements": [
+        0.8,
+        0.6,
+        0.3,
+        0.1
+      ],
+      "dependencies": [],
+      "priority": 0.9,
+      "status": "actionable",
+      "assigned_agent": null,
+      "created_at": 1751516484.6883352,
+      "deadline": null,
+      "completion_time": null,
+      "metadata": {}
+    },
+    "transform_to_standard_format": {
+      "task_id": "transform_to_standard_format",
+      "requirements": [
+        0.7,
+        0.8,
+        0.3,
+        0.2
+      ],
+      "dependencies": [
+        "extract_customer_data"
+      ],
+      "priority": 0.8,
+      "status": "pending",
+      "assigned_agent": null,
+      "created_at": 1751516484.688448,
+      "deadline": null,
+      "completion_time": null,
+      "metadata": {}
+    },
+    "normalize_context_data": {
+      "task_id": "normalize_context_data",
+      "requirements": [
+        0.6,
+        0.7,
+        0.4,
+        0.2
+      ],
+      "dependencies": [
+        "extract_context_info"
+      ],
+      "priority": 0.7,
+      "status": "pending",
+      "assigned_agent": null,
+      "created_at": 1751516484.6885529,
+      "deadline": null,
+      "completion_time": null,
+      "metadata": {}
+    },
+    "analyze_customer_sentiment": {
+      "task_id": "analyze_customer_sentiment",
+      "requirements": [
+        0.3,
+        0.6,
+        0.9,
+        0.4
+      ],
+      "dependencies": [
+        "transform_to_standard_format"
+      ],
+      "priority": 0.9,
+      "status": "pending",
+      "assigned_agent": null,
+      "created_at": 1751516484.688651,
+      "deadline": null,
+      "completion_time": null,
+      "metadata": {}
+    },
+    "analyze_intent_patterns": {
+      "task_id": "analyze_intent_patterns",
+      "requirements": [
+        0.2,
+        0.7,
+        0.8,
+        0.5
+      ],
+      "dependencies": [
+        "normalize_context_data"
+      ],
+      "priority": 0.8,
+      "status": "pending",
+      "assigned_agent": null,
+      "created_at": 1751516484.6887748,
+      "deadline": null,
+      "completion_time": null,
+      "metadata": {}
+    },
+    "synthesize_response_strategy": {
+      "task_id": "synthesize_response_strategy",
+      "requirements": [
+        0.2,
+        0.5,
+        0.7,
+        0.9
+      ],
+      "dependencies": [
+        "analyze_customer_sentiment",
+        "analyze_intent_patterns"
+      ],
+      "priority": 0.9,
+      "status": "pending",
+      "assigned_agent": null,
+      "created_at": 1751516484.688879,
+      "deadline": null,
+      "completion_time": null,
+      "metadata": {}
+    },
+    "generate_final_response": {
+      "task_id": "generate_final_response",
+      "requirements": [
+        0.3,
+        0.8,
+        0.5,
+        0.9
+      ],
+      "dependencies": [
+        "synthesize_response_strategy"
+      ],
+      "priority": 1.0,
+      "status": "pending",
+      "assigned_agent": null,
+      "created_at": 1751516484.6889951,
+      "deadline": null,
+      "completion_time": null,
+      "metadata": {}
+    }
+  },
+  "coordination_history": [
+    {
+      "cycle": 1,
+      "timestamp": 0.2947089672088623,
+      "assignments": {
+        "extract_customer_data": "Agent_Analyzer"
+      },
+      "coordination_quality": -1.9841116513377187e-16,
+      "bio_updated": true,
+      "safety_violations": 0,
+      "governance_domain": "DomainMode.ADAPTIVE",
+      "guarantees_validated": {
+        "convergence_guarantee": true,
+        "safety_guarantee": true,
+        "memory_guarantee": true,
+        "latency_guarantee": true,
+        "all_valid": true
+      },
+      "performance_metrics": {
+        "cycle_latency": 0.0007631778717041016,
+        "assignment_count": 1,
+        "coordination_quality": -1.9841116513377187e-16,
+        "convergence_steps": 2.0,
+        "convergence_rate_2_steps": 1.0,
+        "memory_staleness": 0.2954978942871094,
+        "memory_staleness_bound_satisfied": true,
+        "bio_optimization_active": true,
+        "safety_validated": true,
+        "pheromone_trails": 0,
+        "timestamp": 1751516484.983135
+      }
+    },
+    {
+      "cycle": 2,
+      "timestamp": 0.2955498695373535,
+      "assignments": {},
+      "coordination_quality": 0.0,
+      "bio_updated": false,
+      "safety_violations": 0,
+      "governance_domain": "DomainMode.ADAPTIVE",
+      "guarantees_validated": {
+        "convergence_guarantee": true,
+        "safety_guarantee": true,
+        "memory_guarantee": true,
+        "latency_guarantee": true,
+        "all_valid": true
+      },
+      "performance_metrics": {
+        "cycle_latency": 6.389617919921875e-05,
+        "assignment_count": 0,
+        "coordination_quality": 0.0,
+        "convergence_steps": 2.0,
+        "convergence_rate_2_steps": 1.0,
+        "memory_staleness": 0.29563283920288086,
+        "memory_staleness_bound_satisfied": true,
+        "bio_optimization_active": false,
+        "safety_validated": true,
+        "pheromone_trails": 0,
+        "timestamp": 1751516484.983271
+      }
+    },
+    {
+      "cycle": 3,
+      "timestamp": 0.2956728935241699,
+      "assignments": {},
+      "coordination_quality": 0.0,
+      "bio_updated": false,
+      "safety_violations": 0,
+      "governance_domain": "DomainMode.ADAPTIVE",
+      "guarantees_validated": {
+        "convergence_guarantee": true,
+        "safety_guarantee": true,
+        "memory_guarantee": true,
+        "latency_guarantee": true,
+        "all_valid": true
+      },
+      "performance_metrics": {
+        "cycle_latency": 5.793571472167969e-05,
+        "assignment_count": 0,
+        "coordination_quality": 0.0,
+        "convergence_steps": 2.0,
+        "convergence_rate_2_steps": 1.0,
+        "memory_staleness": 0.2957499027252197,
+        "memory_staleness_bound_satisfied": true,
+        "bio_optimization_active": false,
+        "safety_validated": true,
+        "pheromone_trails": 0,
+        "timestamp": 1751516484.983388
+      }
+    },
+    {
+      "cycle": 4,
+      "timestamp": 0.29578685760498047,
+      "assignments": {},
+      "coordination_quality": 0.0,
+      "bio_updated": false,
+      "safety_violations": 0,
+      "governance_domain": "DomainMode.ADAPTIVE",
+      "guarantees_validated": {
+        "convergence_guarantee": true,
+        "safety_guarantee": true,
+        "memory_guarantee": false,
+        "latency_guarantee": true,
+        "all_valid": false
+      },
+      "performance_metrics": {
+        "cycle_latency": 5.2928924560546875e-05,
+        "assignment_count": 0,
+        "coordination_quality": 0.0,
+        "convergence_steps": 2.0,
+        "convergence_rate_2_steps": 1.0,
+        "memory_staleness": Infinity,
+        "memory_staleness_bound_satisfied": false,
+        "bio_optimization_active": false,
+        "safety_validated": true,
+        "pheromone_trails": 0,
+        "timestamp": 1751516484.983495
+      }
+    },
+    {
+      "cycle": 5,
+      "timestamp": 0.29589176177978516,
+      "assignments": {},
+      "coordination_quality": 0.0,
+      "bio_updated": false,
+      "safety_violations": 0,
+      "governance_domain": "DomainMode.ADAPTIVE",
+      "guarantees_validated": {
+        "convergence_guarantee": true,
+        "safety_guarantee": true,
+        "memory_guarantee": false,
+        "latency_guarantee": true,
+        "all_valid": false
+      },
+      "performance_metrics": {
+        "cycle_latency": 5.507469177246094e-05,
+        "assignment_count": 0,
+        "coordination_quality": 0.0,
+        "convergence_steps": 2.0,
+        "convergence_rate_2_steps": 1.0,
+        "memory_staleness": Infinity,
+        "memory_staleness_bound_satisfied": false,
+        "bio_optimization_active": false,
+        "safety_validated": true,
+        "pheromone_trails": 0,
+        "timestamp": 1751516484.9836018
+      }
+    },
+    {
+      "cycle": 6,
+      "timestamp": 0.29599881172180176,
+      "assignments": {},
+      "coordination_quality": 0.0,
+      "bio_updated": false,
+      "safety_violations": 0,
+      "governance_domain": "DomainMode.ADAPTIVE",
+      "guarantees_validated": {
+        "convergence_guarantee": true,
+        "safety_guarantee": true,
+        "memory_guarantee": false,
+        "latency_guarantee": true,
+        "all_valid": false
+      },
+      "performance_metrics": {
+        "cycle_latency": 5.316734313964844e-05,
+        "assignment_count": 0,
+        "coordination_quality": 0.0,
+        "convergence_steps": 2.0,
+        "convergence_rate_2_steps": 1.0,
+        "memory_staleness": Infinity,
+        "memory_staleness_bound_satisfied": false,
+        "bio_optimization_active": false,
+        "safety_validated": true,
+        "pheromone_trails": 0,
+        "timestamp": 1751516484.983707
+      }
+    },
+    {
+      "cycle": 7,
+      "timestamp": 0.2961258888244629,
+      "assignments": {},
+      "coordination_quality": 0.0,
+      "bio_updated": false,
+      "safety_violations": 0,
+      "governance_domain": "DomainMode.ADAPTIVE",
+      "guarantees_validated": {
+        "convergence_guarantee": true,
+        "safety_guarantee": true,
+        "memory_guarantee": false,
+        "latency_guarantee": true,
+        "all_valid": false
+      },
+      "performance_metrics": {
+        "cycle_latency": 5.2928924560546875e-05,
+        "assignment_count": 0,
+        "coordination_quality": 0.0,
+        "convergence_steps": 2.0,
+        "convergence_rate_2_steps": 1.0,
+        "memory_staleness": Infinity,
+        "memory_staleness_bound_satisfied": false,
+        "bio_optimization_active": false,
+        "safety_validated": true,
+        "pheromone_trails": 0,
+        "timestamp": 1751516484.983833
+      }
+    },
+    {
+      "cycle": 8,
+      "timestamp": 0.2962307929992676,
+      "assignments": {},
+      "coordination_quality": 0.0,
+      "bio_updated": false,
+      "safety_violations": 0,
+      "governance_domain": "DomainMode.ADAPTIVE",
+      "guarantees_validated": {
+        "convergence_guarantee": true,
+        "safety_guarantee": true,
+        "memory_guarantee": false,
+        "latency_guarantee": true,
+        "all_valid": false
+      },
+      "performance_metrics": {
+        "cycle_latency": 5.221366882324219e-05,
+        "assignment_count": 0,
+        "coordination_quality": 0.0,
+        "convergence_steps": 2.0,
+        "convergence_rate_2_steps": 1.0,
+        "memory_staleness": Infinity,
+        "memory_staleness_bound_satisfied": false,
+        "bio_optimization_active": false,
+        "safety_validated": true,
+        "pheromone_trails": 0,
+        "timestamp": 1751516484.983938
+      }
+    },
+    {
+      "cycle": 9,
+      "timestamp": 0.29633402824401855,
+      "assignments": {},
+      "coordination_quality": 0.0,
+      "bio_updated": false,
+      "safety_violations": 0,
+      "governance_domain": "DomainMode.ADAPTIVE",
+      "guarantees_validated": {
+        "convergence_guarantee": true,
+        "safety_guarantee": true,
+        "memory_guarantee": false,
+        "latency_guarantee": true,
+        "all_valid": false
+      },
+      "performance_metrics": {
+        "cycle_latency": 5.507469177246094e-05,
+        "assignment_count": 0,
+        "coordination_quality": 0.0,
+        "convergence_steps": 2.0,
+        "convergence_rate_2_steps": 1.0,
+        "memory_staleness": Infinity,
+        "memory_staleness_bound_satisfied": false,
+        "bio_optimization_active": false,
+        "safety_validated": true,
+        "pheromone_trails": 0,
+        "timestamp": 1751516484.9840431
+      }
+    },
+    {
+      "cycle": 10,
+      "timestamp": 0.29643893241882324,
+      "assignments": {},
+      "coordination_quality": 0.0,
+      "bio_updated": false,
+      "safety_violations": 0,
+      "governance_domain": "DomainMode.ADAPTIVE",
+      "guarantees_validated": {
+        "convergence_guarantee": true,
+        "safety_guarantee": true,
+        "memory_guarantee": false,
+        "latency_guarantee": true,
+        "all_valid": false
+      },
+      "performance_metrics": {
+        "cycle_latency": 5.2928924560546875e-05,
+        "assignment_count": 0,
+        "coordination_quality": 0.0,
+        "convergence_steps": 2.0,
+        "convergence_rate_2_steps": 1.0,
+        "memory_staleness": Infinity,
+        "memory_staleness_bound_satisfied": false,
+        "bio_optimization_active": false,
+        "safety_validated": true,
+        "pheromone_trails": 0,
+        "timestamp": 1751516484.9841468
+      }
+    },
+    {
+      "cycle": 11,
+      "timestamp": 0.29654908180236816,
+      "assignments": {},
+      "coordination_quality": 0.0,
+      "bio_updated": false,
+      "safety_violations": 0,
+      "governance_domain": "DomainMode.ADAPTIVE",
+      "guarantees_validated": {
+        "convergence_guarantee": true,
+        "safety_guarantee": true,
+        "memory_guarantee": false,
+        "latency_guarantee": true,
+        "all_valid": false
+      },
+      "performance_metrics": {
+        "cycle_latency": 5.4836273193359375e-05,
+        "assignment_count": 0,
+        "coordination_quality": 0.0,
+        "convergence_steps": 2.0,
+        "convergence_rate_2_steps": 1.0,
+        "memory_staleness": Infinity,
+        "memory_staleness_bound_satisfied": false,
+        "bio_optimization_active": false,
+        "safety_validated": true,
+        "pheromone_trails": 0,
+        "timestamp": 1751516484.98426
+      }
+    },
+    {
+      "cycle": 12,
+      "timestamp": 0.2966587543487549,
+      "assignments": {},
+      "coordination_quality": 0.0,
+      "bio_updated": false,
+      "safety_violations": 0,
+      "governance_domain": "DomainMode.ADAPTIVE",
+      "guarantees_validated": {
+        "convergence_guarantee": true,
+        "safety_guarantee": true,
+        "memory_guarantee": false,
+        "latency_guarantee": true,
+        "all_valid": false
+      },
+      "performance_metrics": {
+        "cycle_latency": 5.316734313964844e-05,
+        "assignment_count": 0,
+        "coordination_quality": 0.0,
+        "convergence_steps": 2.0,
+        "convergence_rate_2_steps": 1.0,
+        "memory_staleness": Infinity,
+        "memory_staleness_bound_satisfied": false,
+        "bio_optimization_active": false,
+        "safety_validated": true,
+        "pheromone_trails": 0,
+        "timestamp": 1751516484.9843671
+      }
+    },
+    {
+      "cycle": 13,
+      "timestamp": 0.29676270484924316,
+      "assignments": {},
+      "coordination_quality": 0.0,
+      "bio_updated": false,
+      "safety_violations": 0,
+      "governance_domain": "DomainMode.ADAPTIVE",
+      "guarantees_validated": {
+        "convergence_guarantee": true,
+        "safety_guarantee": true,
+        "memory_guarantee": false,
+        "latency_guarantee": true,
+        "all_valid": false
+      },
+      "performance_metrics": {
+        "cycle_latency": 5.125999450683594e-05,
+        "assignment_count": 0,
+        "coordination_quality": 0.0,
+        "convergence_steps": 2.0,
+        "convergence_rate_2_steps": 1.0,
+        "memory_staleness": Infinity,
+        "memory_staleness_bound_satisfied": false,
+        "bio_optimization_active": false,
+        "safety_validated": true,
+        "pheromone_trails": 0,
+        "timestamp": 1751516484.984469
+      }
+    },
+    {
+      "cycle": 14,
+      "timestamp": 0.29686689376831055,
+      "assignments": {},
+      "coordination_quality": 0.0,
+      "bio_updated": false,
+      "safety_violations": 0,
+      "governance_domain": "DomainMode.ADAPTIVE",
+      "guarantees_validated": {
+        "convergence_guarantee": true,
+        "safety_guarantee": true,
+        "memory_guarantee": false,
+        "latency_guarantee": true,
+        "all_valid": false
+      },
+      "performance_metrics": {
+        "cycle_latency": 5.1975250244140625e-05,
+        "assignment_count": 0,
+        "coordination_quality": 0.0,
+        "convergence_steps": 2.0,
+        "convergence_rate_2_steps": 1.0,
+        "memory_staleness": Infinity,
+        "memory_staleness_bound_satisfied": false,
+        "bio_optimization_active": false,
+        "safety_validated": true,
+        "pheromone_trails": 0,
+        "timestamp": 1751516484.9845738
+      }
+    },
+    {
+      "cycle": 15,
+      "timestamp": 0.29697203636169434,
+      "assignments": {},
+      "coordination_quality": 0.0,
+      "bio_updated": false,
+      "safety_violations": 0,
+      "governance_domain": "DomainMode.ADAPTIVE",
+      "guarantees_validated": {
+        "convergence_guarantee": true,
+        "safety_guarantee": true,
+        "memory_guarantee": false,
+        "latency_guarantee": true,
+        "all_valid": false
+      },
+      "performance_metrics": {
+        "cycle_latency": 5.4836273193359375e-05,
+        "assignment_count": 0,
+        "coordination_quality": 0.0,
+        "convergence_steps": 2.0,
+        "convergence_rate_2_steps": 1.0,
+        "memory_staleness": Infinity,
+        "memory_staleness_bound_satisfied": false,
+        "bio_optimization_active": false,
+        "safety_validated": true,
+        "pheromone_trails": 0,
+        "timestamp": 1751516484.984682
+      }
+    }
+  ],
+  "performance_metrics": [
+    {
+      "cycle_latency": 0.0007631778717041016,
+      "assignment_count": 1,
+      "coordination_quality": -1.9841116513377187e-16,
+      "convergence_steps": 2.0,
+      "convergence_rate_2_steps": 1.0,
+      "memory_staleness": 0.2954978942871094,
+      "memory_staleness_bound_satisfied": true,
+      "bio_optimization_active": true,
+      "safety_validated": true,
+      "pheromone_trails": 0,
+      "timestamp": 1751516484.983135
+    },
+    {
+      "cycle_latency": 6.389617919921875e-05,
+      "assignment_count": 0,
+      "coordination_quality": 0.0,
+      "convergence_steps": 2.0,
+      "convergence_rate_2_steps": 1.0,
+      "memory_staleness": 0.29563283920288086,
+      "memory_staleness_bound_satisfied": true,
+      "bio_optimization_active": false,
+      "safety_validated": true,
+      "pheromone_trails": 0,
+      "timestamp": 1751516484.983271
+    },
+    {
+      "cycle_latency": 5.793571472167969e-05,
+      "assignment_count": 0,
+      "coordination_quality": 0.0,
+      "convergence_steps": 2.0,
+      "convergence_rate_2_steps": 1.0,
+      "memory_staleness": 0.2957499027252197,
+      "memory_staleness_bound_satisfied": true,
+      "bio_optimization_active": false,
+      "safety_validated": true,
+      "pheromone_trails": 0,
+      "timestamp": 1751516484.983388
+    },
+    {
+      "cycle_latency": 5.2928924560546875e-05,
+      "assignment_count": 0,
+      "coordination_quality": 0.0,
+      "convergence_steps": 2.0,
+      "convergence_rate_2_steps": 1.0,
+      "memory_staleness": Infinity,
+      "memory_staleness_bound_satisfied": false,
+      "bio_optimization_active": false,
+      "safety_validated": true,
+      "pheromone_trails": 0,
+      "timestamp": 1751516484.983495
+    },
+    {
+      "cycle_latency": 5.507469177246094e-05,
+      "assignment_count": 0,
+      "coordination_quality": 0.0,
+      "convergence_steps": 2.0,
+      "convergence_rate_2_steps": 1.0,
+      "memory_staleness": Infinity,
+      "memory_staleness_bound_satisfied": false,
+      "bio_optimization_active": false,
+      "safety_validated": true,
+      "pheromone_trails": 0,
+      "timestamp": 1751516484.9836018
+    },
+    {
+      "cycle_latency": 5.316734313964844e-05,
+      "assignment_count": 0,
+      "coordination_quality": 0.0,
+      "convergence_steps": 2.0,
+      "convergence_rate_2_steps": 1.0,
+      "memory_staleness": Infinity,
+      "memory_staleness_bound_satisfied": false,
+      "bio_optimization_active": false,
+      "safety_validated": true,
+      "pheromone_trails": 0,
+      "timestamp": 1751516484.983707
+    },
+    {
+      "cycle_latency": 5.2928924560546875e-05,
+      "assignment_count": 0,
+      "coordination_quality": 0.0,
+      "convergence_steps": 2.0,
+      "convergence_rate_2_steps": 1.0,
+      "memory_staleness": Infinity,
+      "memory_staleness_bound_satisfied": false,
+      "bio_optimization_active": false,
+      "safety_validated": true,
+      "pheromone_trails": 0,
+      "timestamp": 1751516484.983833
+    },
+    {
+      "cycle_latency": 5.221366882324219e-05,
+      "assignment_count": 0,
+      "coordination_quality": 0.0,
+      "convergence_steps": 2.0,
+      "convergence_rate_2_steps": 1.0,
+      "memory_staleness": Infinity,
+      "memory_staleness_bound_satisfied": false,
+      "bio_optimization_active": false,
+      "safety_validated": true,
+      "pheromone_trails": 0,
+      "timestamp": 1751516484.983938
+    },
+    {
+      "cycle_latency": 5.507469177246094e-05,
+      "assignment_count": 0,
+      "coordination_quality": 0.0,
+      "convergence_steps": 2.0,
+      "convergence_rate_2_steps": 1.0,
+      "memory_staleness": Infinity,
+      "memory_staleness_bound_satisfied": false,
+      "bio_optimization_active": false,
+      "safety_validated": true,
+      "pheromone_trails": 0,
+      "timestamp": 1751516484.9840431
+    },
+    {
+      "cycle_latency": 5.2928924560546875e-05,
+      "assignment_count": 0,
+      "coordination_quality": 0.0,
+      "convergence_steps": 2.0,
+      "convergence_rate_2_steps": 1.0,
+      "memory_staleness": Infinity,
+      "memory_staleness_bound_satisfied": false,
+      "bio_optimization_active": false,
+      "safety_validated": true,
+      "pheromone_trails": 0,
+      "timestamp": 1751516484.9841468
+    },
+    {
+      "cycle_latency": 5.4836273193359375e-05,
+      "assignment_count": 0,
+      "coordination_quality": 0.0,
+      "convergence_steps": 2.0,
+      "convergence_rate_2_steps": 1.0,
+      "memory_staleness": Infinity,
+      "memory_staleness_bound_satisfied": false,
+      "bio_optimization_active": false,
+      "safety_validated": true,
+      "pheromone_trails": 0,
+      "timestamp": 1751516484.98426
+    },
+    {
+      "cycle_latency": 5.316734313964844e-05,
+      "assignment_count": 0,
+      "coordination_quality": 0.0,
+      "convergence_steps": 2.0,
+      "convergence_rate_2_steps": 1.0,
+      "memory_staleness": Infinity,
+      "memory_staleness_bound_satisfied": false,
+      "bio_optimization_active": false,
+      "safety_validated": true,
+      "pheromone_trails": 0,
+      "timestamp": 1751516484.9843671
+    },
+    {
+      "cycle_latency": 5.125999450683594e-05,
+      "assignment_count": 0,
+      "coordination_quality": 0.0,
+      "convergence_steps": 2.0,
+      "convergence_rate_2_steps": 1.0,
+      "memory_staleness": Infinity,
+      "memory_staleness_bound_satisfied": false,
+      "bio_optimization_active": false,
+      "safety_validated": true,
+      "pheromone_trails": 0,
+      "timestamp": 1751516484.984469
+    },
+    {
+      "cycle_latency": 5.1975250244140625e-05,
+      "assignment_count": 0,
+      "coordination_quality": 0.0,
+      "convergence_steps": 2.0,
+      "convergence_rate_2_steps": 1.0,
+      "memory_staleness": Infinity,
+      "memory_staleness_bound_satisfied": false,
+      "bio_optimization_active": false,
+      "safety_validated": true,
+      "pheromone_trails": 0,
+      "timestamp": 1751516484.9845738
+    },
+    {
+      "cycle_latency": 5.4836273193359375e-05,
+      "assignment_count": 0,
+      "coordination_quality": 0.0,
+      "convergence_steps": 2.0,
+      "convergence_rate_2_steps": 1.0,
+      "memory_staleness": Infinity,
+      "memory_staleness_bound_satisfied": false,
+      "bio_optimization_active": false,
+      "safety_validated": true,
+      "pheromone_trails": 0,
+      "timestamp": 1751516484.984682
+    }
+  ],
+  "system_metrics": {
+    "system_status": "operational",
+    "total_cycles": 15,
+    "total_agents": 4,
+    "total_tasks": 8,
+    "completed_tasks": 0,
+    "average_latency": 0.00010169347127278646,
+    "average_quality": -1.3227411008918125e-17,
+    "average_assignments_per_cycle": 0.06666666666666667,
+    "success_rate": 0.0,
+    "convergence_rate_2_steps": 1.0,
+    "safety_violation_rate": 0.0,
+    "memory_staleness": Infinity,
+    "latency_guarantee_met": "True",
+    "safety_violations": 0,
+    "role_distribution": {
+      "Employed": 2,
+      "Scout": 1,
+      "Onlooker": 1
+    },
+    "governance_domain": "DomainMode.ADAPTIVE",
+    "bio_optimization_enabled": true,
+    "memory_metrics": {
+      "working_memory_size": 12,
+      "flashbulb_size": 5,
+      "flashbulb_current_weight": 1.2404642646282409,
+      "long_term_size": 0,
+      "current_staleness": Infinity,
+      "average_staleness": 0,
+      "staleness_bound_satisfied": false,
+      "memory_utilization": {
+        "working": 0.12,
+        "flashbulb": 0.024809168710594444
+      }
+    },
+    "pheromone_trails": 0,
+    "global_best_fitness": 1.24,
+    "strategic_weights": [
+      0.485979191133143,
+      0.5140208088668569
+    ]
+  },
+  "governance_config": {
+    "domain": "DomainMode.ADAPTIVE",
+    "bio_optimization_gate": "scheduled",
+    "safety_threshold": 0.7,
+    "safety_samples": 59,
+    "error_tolerance": 0.05,
+    "memory_decay_rate": 0.45,
+    "recovery_sla_seconds": 300
+  },
+  "theoretical_validation": [
+    {
+      "timestamp": 1751516484.983656,
+      "violations": [],
+      "all_valid": true
+    },
+    {
+      "timestamp": 1751516484.983785,
+      "violations": [],
+      "all_valid": true
+    },
+    {
+      "timestamp": 1751516484.9838889,
+      "violations": [],
+      "all_valid": true
+    },
+    {
+      "timestamp": 1751516484.983992,
+      "violations": [],
+      "all_valid": true
+    },
+    {
+      "timestamp": 1751516484.984096,
+      "violations": [],
+      "all_valid": true
+    },
+    {
+      "timestamp": 1751516484.9842072,
+      "violations": [],
+      "all_valid": true
+    },
+    {
+      "timestamp": 1751516484.9843159,
+      "violations": [],
+      "all_valid": true
+    },
+    {
+      "timestamp": 1751516484.984419,
+      "violations": [],
+      "all_valid": true
+    },
+    {
+      "timestamp": 1751516484.984525,
+      "violations": [],
+      "all_valid": true
+    },
+    {
+      "timestamp": 1751516484.984632,
+      "violations": [],
+      "all_valid": true
+    }
+  ]
+}
