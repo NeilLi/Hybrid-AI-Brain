@@ -1,4 +1,4 @@
-# Hybrid AI Brain: Provably Safe Multi-Agent Coordination with Graph Reasoning
+# Hybrid AI Brain: Provably Safe Trustworthy AI Architecture with Graph Reasoning
 
 **By Neil Li (Ning Li) - Independent Researcher**  
 **Version 1.0 - June 2025**
@@ -378,7 +378,7 @@ graph TB
 
 ```bibtex
 @article{li2025hybrid,
-    title={Hybrid AI Brain: Provably Safe Multi-Agent Coordination with Graph Reasoning},
+    title={Hybrid AI Brain: Provably Safe Trustworthy AI Architecture with Graph Reasoning},
     author={Ning Li},
     journal={Journal of Artificial Intelligence Research},
     volume={1},
